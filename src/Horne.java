@@ -5,8 +5,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Horne {
-	
-	public static final String ANSI_RESET = "\u001B[0m";
+    
+    public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
@@ -17,27 +17,37 @@ public class Horne {
     
     public static void main(String[] args) {
         Scanner benutzerEingabeScanner = new Scanner(System.in);
-        System.out.println(ANSI_GREEN +"Möchten Sie die Koeffizienten des Polynoms manuell eingeben? (j/n)"+ ANSI_RESET);
+        while (true) {
+            System.out.println(ANSI_GREEN + "Möchten Sie die Koeffizienten des Polynoms manuell eingeben? (j/n)" + ANSI_RESET);
+            String benutzerAuswahl = benutzerEingabeScanner.next();
+            if ("j".equalsIgnoreCase(benutzerAuswahl) || "n".equalsIgnoreCase(benutzerAuswahl)) {
+                break;
+            }
+            System.out.println(ANSI_RED + "Ungültige Auswahl. Bitte geben Sie 'j' oder 'n' ein." + ANSI_RESET);
+        }
         String benutzerAuswahl = benutzerEingabeScanner.next();
+
         double[] polynomKoeffizienten;
         int anzahlNullstellen;
         double[] listeDerNullstellen;
 
         if ("j".equalsIgnoreCase(benutzerAuswahl)) {
-            System.out.println(ANSI_PURPLE+"Wie viele Koeffizienten hat das Polynom?"+ANSI_PURPLE);
-            int anzahlKoeffizienten = benutzerEingabeScanner.nextInt();
+            System.out.println(ANSI_PURPLE + "Wie viele Koeffizienten hat das Polynom?" + ANSI_PURPLE);
+            int anzahlKoeffizienten = lesePositiveGanzzahl(benutzerEingabeScanner);
             polynomKoeffizienten = new double[anzahlKoeffizienten];
-            System.out.println(ANSI_GREEN+"Geben Sie die Koeffizienten ein, beginnend mit dem höchsten Grad:"+ANSI_GREEN);
+
+            System.out.println(ANSI_GREEN + "Geben Sie die Koeffizienten ein, beginnend mit dem höchsten Grad:" + ANSI_GREEN);
             for (int i = 0; i < anzahlKoeffizienten; i++) {
-                polynomKoeffizienten[i] = benutzerEingabeScanner.nextDouble();
+                polynomKoeffizienten[i] = leseGleitkommazahl(benutzerEingabeScanner);
             }
 
             System.out.println(ANSI_CYAN + "Wie viele Nullstellen?" + ANSI_RESET);
-            anzahlNullstellen = benutzerEingabeScanner.nextInt();
+            anzahlNullstellen = lesePositiveGanzzahl(benutzerEingabeScanner);
             listeDerNullstellen = new double[anzahlNullstellen];
+
             System.out.println("Geben Sie die " + anzahlNullstellen + " Nullstellen ein:");
             for (int i = 0; i < anzahlNullstellen; i++) {
-                listeDerNullstellen[i] = benutzerEingabeScanner.nextDouble();
+                listeDerNullstellen[i] = leseGleitkommazahl(benutzerEingabeScanner);
             }
         } else {
             Random zufallsGenerator = new Random();
@@ -55,6 +65,7 @@ public class Horne {
 
             System.out.println(ANSI_CYAN + "Generiertes Polynom hat " + anzahlKoeffizienten + " Koeffizienten und " + anzahlNullstellen + " Nullstellen." + ANSI_RESET);
         }
+        
         System.out.println(ANSI_BLUE + "Ursprüngliches Polynom: " + urspruenglichesPolynomAlsString(polynomKoeffizienten) + ANSI_RESET);
         System.out.println(ANSI_GREEN + "Zu entwickelndes Polynom: " + zuEntwickelndesPolynomAlsString(listeDerNullstellen) + ANSI_RESET);
        
@@ -141,6 +152,46 @@ public class Horne {
 
         benutzerEingabeScanner.close();
     }
+    
+    public static int lesePositiveGanzzahl(Scanner scanner) {
+        int zahl;
+        while (true) {
+            if (scanner.hasNextInt()) {
+                zahl = scanner.nextInt();
+                if (zahl > 0 && zahl <= 100) {  // Nur Zahlen zwischen 1 und 100 sind erlaubt
+                    return zahl;
+                } else {
+                    System.out.println(ANSI_RED + "Bitte geben Sie eine Ganzzahl zwischen 2 und 10 ein." + ANSI_RESET);
+                }
+            } else {
+                System.out.println(ANSI_RED + "Ungültige Eingabe. Bitte geben Sie eine Ganzzahl ein." + ANSI_RESET);
+                scanner.next();  // Ungültige Eingabe verbrauchen
+            }
+        }
+    }
+
+    public static double leseGleitkommazahl(Scanner scanner) {
+        while (true) {
+            if (scanner.hasNextDouble()) {
+                double zahl = scanner.nextDouble();
+                if (zahl > -1.0E7 && zahl < 1.0E7) {  // Nur Zahlen im Bereich von -1.0E7 bis 1.0E7 sind erlaubt
+                    return zahl;
+                } else {
+                    System.out.println(ANSI_RED + "Bitte geben Sie eine Fließkommazahl im Bereich von -1.0E7 bis 1.0E7 ein." + ANSI_RESET);
+                }
+            } else {
+                System.out.println(ANSI_RED + "Ungültige Eingabe. Bitte geben Sie eine Fließkommazahl ein." + ANSI_RESET);
+                scanner.next();  // Ungültige Eingabe verbrauchen
+            }
+        }
+    }
+    
+
+
+
+
+
+
     public static String urspruenglichesPolynomAlsString(double[] koeffizienten) {
         StringBuilder sb = new StringBuilder();
         sb.append("P(z) = ");

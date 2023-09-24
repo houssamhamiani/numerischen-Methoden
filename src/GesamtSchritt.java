@@ -255,20 +255,20 @@ public class GesamtSchritt {
         GesamtSchritt g = new GesamtSchritt();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println(ANSI_RED+"Möchten Sie eine Matrix und einen Vektor manuell eingeben? (ja/nein)"+ANSI_RED);
+        System.out.println(ANSI_RED+"Möchten Sie eine Matrix und einen Vektor manuell eingeben? Nur für (ja/nein)"+ANSI_RED);
         String nutzerAntwort = scanner.nextLine();
 
         Matrix matrix;
         Matrix vektor;
 
         if ("ja".equalsIgnoreCase(nutzerAntwort)) {
-            System.out.println(ANSI_GREEN+"Bitte geben Sie die Größe der Matrix ein (ein Integer):"+ANSI_GREEN);
+            System.out.println(ANSI_GREEN+"Bitte geben Sie die Größe der Matrix ein ( nur für ganze Zahlen zwischen 2 und 13):"+ANSI_GREEN);
             int groesse = scanner.nextInt();
             double[][] manuelleMatrix = new double[groesse][groesse];
             double[][] manuellerVektor = new double[groesse][1];
 
             // Eingabe für Matrix
-            System.out.println(ANSI_RED+"Bitte geben Sie die Elemente der Matrix ein:"+ANSI_RED);
+            System.out.println(ANSI_RED+"Bitte geben Sie nur ganze Zahlen als Elemente der Matrix ein:"+ANSI_RED);
             for (int i = 0; i < groesse; i++) {
                 for (int j = 0; j < groesse; j++) {
                     manuelleMatrix[i][j] = scanner.nextDouble();
@@ -310,7 +310,7 @@ public class GesamtSchritt {
             vektor = new Matrix(manuellerVektor);
 
         } else {
-            System.out.println(ANSI_RED+"Bitte geben Sie die Größe der zu generierenden Matrix ein (ein Integer):"+ANSI_RED);
+            System.out.println(ANSI_RED+"Bitte geben Sie die Größe der zu generierenden Matrix ein (ganze Zahlen zwischen 2 und 13):"+ANSI_RED);
             int groesse = scanner.nextInt();
             matrix = g.generiereMatrix(groesse);
             vektor = g.generiereVektor(groesse);
